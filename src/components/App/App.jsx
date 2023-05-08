@@ -21,9 +21,17 @@ export class App extends React.Component {
     this.setState({ [name]: value });
   };
 
+  filteredContacts = () =>
+    this.state.filter === ''
+      ? this.state.contacts
+      : this.state.contacts.filter(contact =>
+          contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
+        );
+
   formSubmitHandler = data => {
-    console.log(data);
-    this.state.contacts.some(contact => contact.name === data.name)
+    this.state.contacts.some(
+      contact => contact.name.toLowerCase() === data.name.toLowerCase()
+    )
       ? alert(`${data.name} is already in contacts`)
       : this.setState(prevState => ({
           contacts: [
@@ -48,7 +56,7 @@ export class App extends React.Component {
         <h2>Contacts</h2>
         <Filter filter={this.state.filter} handleFilter={this.handleChange} />
         <ContactList
-          contacts={this.state.contacts}
+          changedContacts={this.filteredContacts()}
           filter={this.state.filter}
           onDelete={this.deleteContact}
         />
